@@ -13,6 +13,7 @@ import weka.gui.visualize.PlotData2D;
 import weka.gui.visualize.ThresholdVisualizePanel;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.Random;
 
 import javax.swing.JFrame;
@@ -33,26 +34,39 @@ public class GenerateROC {
 	 *             if something goes wrong
 	 */
 	public static void main(String[] args) throws Exception {
-		// load data
-		Instances data = DataSource
-				.read("C:\\Users\\\\Joe\\eclipse-workspace\\WekaMLWorkbench\\output\\FeatureSelected\\Correlation.csv"); // args[0]
-		data.setClassIndex(data.numAttributes() - 1);
 
-		int n = data.numClasses();
-		for (int i = 0; i < n; i++) {
-			RandomForest(data, 10, i);
-			RandomTree(data, 10, i);
-			NaiveBayes(data, 10, i);
+		// Get all filtered files
+		String path = "output/FeaturesSelected";
+		File[] files = new File(path).listFiles(new FileFilter() {
+			public boolean accept(File path) {
+				if (path.isFile()) {
+					return true;
+				}
+				return false;
+			}
+		});
+		
+		// Analyze all files in the FeaturesSelected directory
+		for (int j = 0; j < files.length; j++) {
+			Instances data = DataSource.read(files[j].toString()); 
+			data.setClassIndex(data.numAttributes() - 1);
+			System.out.println("=========== Analyzing: " + data.relationName() + " =================");
+
+			int n = data.numClasses();
+			for (int i = 0; i < n; i++) {
+				RandomForest(data, 10, i, data.relationName());
+				RandomTree(data, 10, i, data.relationName());
+				NaiveBayes(data, 10, i, data.relationName());
+			}
 		}
-
 		System.exit(1);
 	}
 
-	public static void RandomForest(Instances data, int CrossValidation, int classIndex) throws Exception {
+	public static void RandomForest(Instances data, int CrossValidation, int classIndex, String ClassifierName)
+			throws Exception {
 		System.out.println("Analyzing class: " + classIndex + " using RandomForest classifier ...");
 
 		// evaluate classifier
-		// Classifier cl = new NaiveBayes();
 		Classifier cl = new RandomForest();
 		Evaluation eval = new Evaluation(data);
 		eval.crossValidateModel(cl, data, CrossValidation, new Random(1));
@@ -86,8 +100,8 @@ public class GenerateROC {
 
 		// Save to file specified as second argument (can use any of
 		// BMPWriter, JPEGWriter, PNGWriter, PostscriptWriter for different formats)
-		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + "RF_Class_" + classIndex
-				+ "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
+		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + ClassifierName + "_RF_Class_"
+				+ classIndex + "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
 		jcw.toOutput();
 
 		System.out.println();
@@ -96,7 +110,8 @@ public class GenerateROC {
 		System.out.println("Done!");
 	}
 
-	public static void NaiveBayes(Instances data, int CrossValidation, int classIndex) throws Exception {
+	public static void NaiveBayes(Instances data, int CrossValidation, int classIndex, String ClassifierName)
+			throws Exception {
 		System.out.println("Analyzing class: " + classIndex + " using NaiveBayes classifier ...");
 
 		// evaluate classifier
@@ -133,8 +148,8 @@ public class GenerateROC {
 
 		// Save to file specified as second argument (can use any of
 		// BMPWriter, JPEGWriter, PNGWriter, PostscriptWriter for different formats)
-		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + "NB_Class_" + classIndex
-				+ "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
+		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + ClassifierName + "_NB_Class_"
+				+ classIndex + "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
 		jcw.toOutput();
 
 		System.out.println();
@@ -143,7 +158,8 @@ public class GenerateROC {
 		System.out.println("Done!");
 	}
 
-	public static void RandomTree(Instances data, int CrossValidation, int classIndex) throws Exception {
+	public static void RandomTree(Instances data, int CrossValidation, int classIndex, String ClassifierName)
+			throws Exception {
 		System.out.println("Analyzing class: " + classIndex + " using RandomTree classifier ...");
 
 		// evaluate classifier
@@ -180,8 +196,8 @@ public class GenerateROC {
 
 		// Save to file specified as second argument (can use any of
 		// BMPWriter, JPEGWriter, PNGWriter, PostscriptWriter for different formats)
-		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + "RT_Class_" + classIndex
-				+ "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
+		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + ClassifierName + "_RT_Class_"
+				+ classIndex + "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
 		jcw.toOutput();
 
 		System.out.println();
