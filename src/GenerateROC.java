@@ -42,10 +42,9 @@ public class GenerateROC {
 		for (int i = 0; i < n; i++) {
 			RandomForest(data, 10, i);
 			RandomTree(data, 10, i);
-		}
-		for (int i = 0; i < n; i++) {
 			NaiveBayes(data, 10, i);
 		}
+
 		System.exit(1);
 	}
 
@@ -87,8 +86,8 @@ public class GenerateROC {
 
 		// Save to file specified as second argument (can use any of
 		// BMPWriter, JPEGWriter, PNGWriter, PostscriptWriter for different formats)
-		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + tvp.getName() + "_RF_"
-				+ classIndex + "_" + Utils.doubleToString(ThresholdCurve.getPRCArea(curve), 4) + "_.jpg"));
+		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + "RF_Class_" + classIndex
+				+ "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
 		jcw.toOutput();
 
 		System.out.println();
@@ -134,8 +133,8 @@ public class GenerateROC {
 
 		// Save to file specified as second argument (can use any of
 		// BMPWriter, JPEGWriter, PNGWriter, PostscriptWriter for different formats)
-		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + tvp.getName() + "_NB_"
-				+ classIndex + "_" + Utils.doubleToString(ThresholdCurve.getPRCArea(curve), 4) + "_.jpg"));
+		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + "NB_Class_" + classIndex
+				+ "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
 		jcw.toOutput();
 
 		System.out.println();
@@ -181,8 +180,8 @@ public class GenerateROC {
 
 		// Save to file specified as second argument (can use any of
 		// BMPWriter, JPEGWriter, PNGWriter, PostscriptWriter for different formats)
-		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + tvp.getName() + "_RT_"
-				+ classIndex + "_" + Utils.doubleToString(ThresholdCurve.getPRCArea(curve), 4) + "_.jpg"));
+		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + "RT_Class_" + classIndex
+				+ "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
 		jcw.toOutput();
 
 		System.out.println();
