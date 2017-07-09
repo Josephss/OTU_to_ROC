@@ -25,7 +25,7 @@ import javax.swing.JFrame;
 public class GenerateROC {
 
 	/**
-	 * Takes one argument: dataset in ARFF format (expects class to be last
+	 * Takes one argument: dataset in CSV or ARFF format (expects class to be last
 	 * attribute).
 	 * 
 	 * @param args
@@ -35,7 +35,7 @@ public class GenerateROC {
 	 */
 	public void main(String[] args) throws Exception {
 
-		// args usage: -nb 1 -rf 1 -rt 1 -p output/FeaturesSelected | NB, RF, RT, Path |
+		// args usage: -nb 1 -rf 1 -rt 1 -p output/FeaturesSelected | (1 = true, 0 = false) | NB, RF, RT, Path 
 
 		boolean NB = false, RF = false, RT = false;
 		if (args[1] == "1") {
@@ -92,7 +92,6 @@ public class GenerateROC {
 
 		// generate curve
 		ThresholdCurve tc = new ThresholdCurve();
-		// int classIndex = 2;
 		Instances curve = tc.getCurve(eval.predictions(), classIndex);
 
 		// plot curve
@@ -110,15 +109,11 @@ public class GenerateROC {
 		// add plot
 		tvp.addPlot(plotdata);
 
-		// System.out.println(plotdata.getPlotInstances());
-
 		JFrame jf = new JFrame();
 		jf.setSize(900, 700);
 		jf.getContentPane().add(tvp);
 		jf.pack();
 
-		// Save to file specified as second argument (can use any of
-		// BMPWriter, JPEGWriter, PNGWriter, PostscriptWriter for different formats)
 		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + ClassifierName + "_RF_Class_"
 				+ classIndex + "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
 		jcw.toOutput();
@@ -140,7 +135,6 @@ public class GenerateROC {
 
 		// generate curve
 		ThresholdCurve tc = new ThresholdCurve();
-		// int classIndex = 2;
 		Instances curve = tc.getCurve(eval.predictions(), classIndex);
 
 		// plot curve
@@ -158,15 +152,11 @@ public class GenerateROC {
 		// add plot
 		tvp.addPlot(plotdata);
 
-		// System.out.println(plotdata.getPlotInstances());
-
 		JFrame jf = new JFrame();
 		jf.setSize(900, 700);
 		jf.getContentPane().add(tvp);
 		jf.pack();
 
-		// Save to file specified as second argument (can use any of
-		// BMPWriter, JPEGWriter, PNGWriter, PostscriptWriter for different formats)
 		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + ClassifierName + "_NB_Class_"
 				+ classIndex + "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
 		jcw.toOutput();
@@ -188,7 +178,6 @@ public class GenerateROC {
 
 		// generate curve
 		ThresholdCurve tc = new ThresholdCurve();
-		// int classIndex = 2;
 		Instances curve = tc.getCurve(eval.predictions(), classIndex);
 
 		// plot curve
@@ -206,15 +195,11 @@ public class GenerateROC {
 		// add plot
 		tvp.addPlot(plotdata);
 
-		// System.out.println(plotdata.getPlotInstances());
-
 		JFrame jf = new JFrame();
 		jf.setSize(900, 700);
 		jf.getContentPane().add(tvp);
 		jf.pack();
 
-		// Save to file specified as second argument (can use any of
-		// BMPWriter, JPEGWriter, PNGWriter, PostscriptWriter for different formats)
 		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + ClassifierName + "_RT_Class_"
 				+ classIndex + "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
 		jcw.toOutput();

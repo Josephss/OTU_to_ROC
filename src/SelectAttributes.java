@@ -30,24 +30,57 @@ public class SelectAttributes {
 	 * @throws Exception
 	 *             if something goes wrong
 	 */
-	public static void main(String[] args) throws Exception {
+	public void main(String[] args) throws Exception {
+		// args usage: -ip "C:\\Users\\Joe\\Desktop\\Summer
+		// 2017\\BioSNTR\\datasets\\V1V3.csv" -ra 1 -ca 1 - su 1 -ig 1 -ga 1 -att -1 -op
+		// "output/FeaturesSelected/" | (1 = true, 0 = false)
+
+		boolean RA = false, CA = false, SU = false, IG = false, GA = false;
+		// TODO: Check args input
+
+		if (args[3] == "1") {
+			RA = true;
+		}
+		if (args[5] == "1") {
+			CA = true;
+		}
+		if (args[7] == "1") {
+			SU = true;
+		}
+		if (args[9] == "1") {
+			IG = true;
+		}
+		if (args[11] == "1") {
+			GA = true;
+		}
 		// load data
 		System.out.println("\n0. Loading data ...");
-		DataSource source = new DataSource("C:\\Users\\Joe\\Desktop\\Summer 2017\\BioSNTR\\datasets\\V1V3.csv");
+		DataSource source = new DataSource(args[1]);
 		Instances data = source.getDataSet();
 		if (data.classIndex() == -1)
 			data.setClassIndex(data.numAttributes() - 1);
 		// process data
-		System.out.println("\n1. Processing data ...");
 
-		ReliefFAttributeEval(data);
-		CorrelationAttributeEval(data);
-		SymmetricalUncertAttributeEval(data);
-		InfoGainAttributeEval(data);
-		GainRatioAttributeEval(data);
+		System.out.println("\n1. Processing data ...");
+		if (RA) {
+			ReliefFAttributeEval(data, Integer.parseInt(args[13]), args[15]);
+		}
+		if (CA) {
+			CorrelationAttributeEval(data, Integer.parseInt(args[13]), args[15]);
+		}
+		if (SU) {
+			SymmetricalUncertAttributeEval(data, Integer.parseInt(args[13]), args[15]);
+		}
+		if (IG) {
+			InfoGainAttributeEval(data, Integer.parseInt(args[13]), args[15]);
+		}
+		if (GA) {
+			GainRatioAttributeEval(data, Integer.parseInt(args[13]), args[15]);
+		}
 	}
 
-	protected static void ReliefFAttributeEval(Instances data) throws Exception {
+	protected static void ReliefFAttributeEval(Instances data, int numOfAttributes, String outputPath)
+			throws Exception {
 		System.out.println("\n Selecting Features ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
@@ -60,7 +93,7 @@ public class SelectAttributes {
 
 		Ranker rk = new Ranker();
 		rk.setGenerateRanking(true);
-		rk.setNumToSelect(-1);
+		rk.setNumToSelect(numOfAttributes); // -1 to select all attributes
 		rk.setThreshold(-1.7976931348623157E308);
 
 		filter.setEvaluator(ra);
@@ -87,11 +120,12 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "ReliefF"); // class, data, fileName
+		writeFile(classes, newData, "ReliefF", outputPath); // class, data, fileName
 
 	}
 
-	protected static void CorrelationAttributeEval(Instances data) throws Exception {
+	protected static void CorrelationAttributeEval(Instances data, int numOfAttributes, String outputPath)
+			throws Exception {
 		System.out.println("\n Selecting Features ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
@@ -101,7 +135,7 @@ public class SelectAttributes {
 
 		Ranker rk = new Ranker();
 		rk.setGenerateRanking(true);
-		rk.setNumToSelect(-1);
+		rk.setNumToSelect(numOfAttributes);
 		rk.setThreshold(-1.7976931348623157E308);
 
 		filter.setEvaluator(ca);
@@ -128,11 +162,12 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "Correlation"); // class, data, fileName
+		writeFile(classes, newData, "Correlation", outputPath); // class, data, fileName
 
 	}
 
-	protected static void SymmetricalUncertAttributeEval(Instances data) throws Exception {
+	protected static void SymmetricalUncertAttributeEval(Instances data, int numOfAttributes, String outputPath)
+			throws Exception {
 		System.out.println("\n Selecting Features ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
@@ -142,7 +177,7 @@ public class SelectAttributes {
 
 		Ranker rk = new Ranker();
 		rk.setGenerateRanking(true);
-		rk.setNumToSelect(-1);
+		rk.setNumToSelect(numOfAttributes);
 		rk.setThreshold(-1.7976931348623157E308);
 
 		filter.setEvaluator(su);
@@ -169,11 +204,12 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "SymmetricalUncert"); // class, data, fileName
+		writeFile(classes, newData, "SymmetricalUncert", outputPath); // class, data, fileName
 
 	}
 
-	protected static void InfoGainAttributeEval(Instances data) throws Exception {
+	protected static void InfoGainAttributeEval(Instances data, int numOfAttributes, String outputPath)
+			throws Exception {
 		System.out.println("\n Selecting Features ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
@@ -184,7 +220,7 @@ public class SelectAttributes {
 
 		Ranker rk = new Ranker();
 		rk.setGenerateRanking(true);
-		rk.setNumToSelect(-1);
+		rk.setNumToSelect(numOfAttributes);
 		rk.setThreshold(-1.7976931348623157E308);
 
 		filter.setEvaluator(ig);
@@ -211,11 +247,12 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "InfoGain"); // class, data, fileName
+		writeFile(classes, newData, "InfoGain", outputPath); // class, data, fileName
 
 	}
 
-	protected static void GainRatioAttributeEval(Instances data) throws Exception {
+	protected static void GainRatioAttributeEval(Instances data, int numOfAttributes, String outputPath)
+			throws Exception {
 		System.out.println("\n Selecting Features ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
@@ -225,7 +262,7 @@ public class SelectAttributes {
 
 		Ranker rk = new Ranker();
 		rk.setGenerateRanking(true);
-		rk.setNumToSelect(-1);
+		rk.setNumToSelect(numOfAttributes);
 		rk.setThreshold(-1.7976931348623157E308);
 
 		filter.setEvaluator(gr);
@@ -252,11 +289,12 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "GainRatio"); // class, data, fileName
+		writeFile(classes, newData, "GainRatio", outputPath); // class, data, fileName
 
 	}
 
-	public static void writeFile(Object[] classes, Instances data, String fileName) throws IOException {
+	public static void writeFile(Object[] classes, Instances data, String fileName, String outputPath)
+			throws IOException {
 		ArrayList<String> lines = new ArrayList<>();
 
 		String[] tempData = asStrings(data.toArray());
@@ -268,7 +306,7 @@ public class SelectAttributes {
 			lines.add(tempData[i]);
 		}
 
-		Path file = Paths.get("output/FeaturesSelected/" + fileName + ".csv");
+		Path file = Paths.get(outputPath + fileName + ".csv");
 		Files.write(file, lines, Charset.forName("UTF-8"));
 	}
 
