@@ -35,7 +35,7 @@ public class GenerateROC {
 	 */
 	public void main(String[] args) throws Exception {
 
-		// args usage: -nb 1 -rf 1 -rt 1 -p output/FeaturesSelected | (1 = true, 0 = false) | NB, RF, RT, Path 
+		// args usage: -nb 1 -rf 1 -rt 1 -ip output/FeaturesSelected  -op ouput/ROC| (1 = true, 0 = false) | NB, RF, RT, Path 
 
 		boolean NB = false, RF = false, RT = false;
 		if (args[1] == "1") {
@@ -67,21 +67,21 @@ public class GenerateROC {
 			int n = data.numClasses();
 			for (int i = 0; i < n; i++) {
 				if (NB) {
-					NaiveBayes(data, 10, i, data.relationName());
+					NaiveBayes(data, 10, i, data.relationName(), args[9]);
 				}
 				if (RF) {
-					RandomForest(data, 10, i, data.relationName());
+					RandomForest(data, 10, i, data.relationName(), args[9]);
 				}
 				if (RT) {
-					RandomTree(data, 10, i, data.relationName());
+					RandomTree(data, 10, i, data.relationName(), args[9]);
 				}
 
 			}
 		}
-		System.exit(1);
+		//System.exit(1);
 	}
 
-	public static void RandomForest(Instances data, int CrossValidation, int classIndex, String ClassifierName)
+	public static void RandomForest(Instances data, int CrossValidation, int classIndex, String ClassifierName, String outputPath)
 			throws Exception {
 		System.out.println("Analyzing class: " + classIndex + " using RandomForest classifier ...");
 
@@ -114,7 +114,7 @@ public class GenerateROC {
 		jf.getContentPane().add(tvp);
 		jf.pack();
 
-		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + ClassifierName + "_RF_Class_"
+		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File(outputPath + ClassifierName + "_RF_Class_"
 				+ classIndex + "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
 		jcw.toOutput();
 
@@ -124,7 +124,7 @@ public class GenerateROC {
 		System.out.println("Done!");
 	}
 
-	public static void NaiveBayes(Instances data, int CrossValidation, int classIndex, String ClassifierName)
+	public static void NaiveBayes(Instances data, int CrossValidation, int classIndex, String ClassifierName, String outputPath)
 			throws Exception {
 		System.out.println("Analyzing class: " + classIndex + " using NaiveBayes classifier ...");
 
@@ -157,7 +157,7 @@ public class GenerateROC {
 		jf.getContentPane().add(tvp);
 		jf.pack();
 
-		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + ClassifierName + "_NB_Class_"
+		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File(outputPath + ClassifierName + "_NB_Class_"
 				+ classIndex + "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
 		jcw.toOutput();
 
@@ -167,7 +167,7 @@ public class GenerateROC {
 		System.out.println("Done!");
 	}
 
-	public static void RandomTree(Instances data, int CrossValidation, int classIndex, String ClassifierName)
+	public static void RandomTree(Instances data, int CrossValidation, int classIndex, String ClassifierName, String outputPath)
 			throws Exception {
 		System.out.println("Analyzing class: " + classIndex + " using RandomTree classifier ...");
 
@@ -200,7 +200,7 @@ public class GenerateROC {
 		jf.getContentPane().add(tvp);
 		jf.pack();
 
-		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File("output/ROC/" + ClassifierName + "_RT_Class_"
+		JComponentWriter jcw = new JPEGWriter(tvp.getPlotPanel(), new File(outputPath + ClassifierName + "_RT_Class_"
 				+ classIndex + "_AUC_" + Utils.doubleToString(ThresholdCurve.getROCArea(curve), 4) + "_.jpg"));
 		jcw.toOutput();
 
