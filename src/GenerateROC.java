@@ -33,10 +33,22 @@ public class GenerateROC {
 	 * @throws Exception
 	 *             if something goes wrong
 	 */
-	public static void main(String[] args) throws Exception {
+	public void main(String[] args) throws Exception {
 
+		// args usage: -nb 1 -rf 1 -rt 1 -p output/FeaturesSelected | NB, RF, RT, Path |
+
+		boolean NB = false, RF = false, RT = false;
+		if (args[1] == "1") {
+			NB = true;
+		}
+		if (args[3] == "1") {
+			RF = true;
+		}
+		if (args[5] == "1") {
+			RT = true;
+		}
 		// Get all filtered files
-		String path = "output/FeaturesSelected";
+		String path = args[7];
 		File[] files = new File(path).listFiles(new FileFilter() {
 			public boolean accept(File path) {
 				if (path.isFile()) {
@@ -45,18 +57,25 @@ public class GenerateROC {
 				return false;
 			}
 		});
-		
+
 		// Analyze all files in the FeaturesSelected directory
 		for (int j = 0; j < files.length; j++) {
-			Instances data = DataSource.read(files[j].toString()); 
+			Instances data = DataSource.read(files[j].toString());
 			data.setClassIndex(data.numAttributes() - 1);
 			System.out.println("=========== Analyzing: " + data.relationName() + " =================");
 
 			int n = data.numClasses();
 			for (int i = 0; i < n; i++) {
-				RandomForest(data, 10, i, data.relationName());
-				RandomTree(data, 10, i, data.relationName());
-				NaiveBayes(data, 10, i, data.relationName());
+				if (NB) {
+					NaiveBayes(data, 10, i, data.relationName());
+				}
+				if (RF) {
+					RandomForest(data, 10, i, data.relationName());
+				}
+				if (RT) {
+					RandomTree(data, 10, i, data.relationName());
+				}
+
 			}
 		}
 		System.exit(1);

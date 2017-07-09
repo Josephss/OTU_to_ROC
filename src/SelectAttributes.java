@@ -22,7 +22,7 @@ import weka.filters.Filter;
 public class SelectAttributes {
 
 	/**
-	 * Takes one argument: dataset in ARFF format (expects class to be last
+	 * Takes one argument: dataset in CSV or ARFF format (expects class to be last
 	 * attribute).
 	 * 
 	 * @param args
