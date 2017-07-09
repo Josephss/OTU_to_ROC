@@ -43,6 +43,7 @@ public class OTU_to_ROC {
 		}
 
 		completionIndicator();
+		System.exit(1);
 	}
 
 	private static void cleanUp(File attDir, File ROCDir, File completed) {
