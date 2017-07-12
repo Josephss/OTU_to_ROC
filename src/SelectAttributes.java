@@ -81,7 +81,7 @@ public class SelectAttributes {
 
 	protected static void ReliefFAttributeEval(Instances data, int numOfAttributes, String outputPath)
 			throws Exception {
-		System.out.println("\n Selecting Features ...");
+		System.out.println("\n Selecting Features using ReliefFAttributeEval ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
 		ReliefFAttributeEval ra = new ReliefFAttributeEval();
@@ -126,7 +126,7 @@ public class SelectAttributes {
 
 	protected static void CorrelationAttributeEval(Instances data, int numOfAttributes, String outputPath)
 			throws Exception {
-		System.out.println("\n Selecting Features ...");
+		System.out.println("\n Selecting Features using CorrelationAttributeEval ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
 		CorrelationAttributeEval ca = new CorrelationAttributeEval();
@@ -168,7 +168,7 @@ public class SelectAttributes {
 
 	protected static void SymmetricalUncertAttributeEval(Instances data, int numOfAttributes, String outputPath)
 			throws Exception {
-		System.out.println("\n Selecting Features ...");
+		System.out.println("\n Selecting Features using SymmetricalUncertAttributeEval ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
 		SymmetricalUncertAttributeEval su = new SymmetricalUncertAttributeEval();
@@ -210,7 +210,7 @@ public class SelectAttributes {
 
 	protected static void InfoGainAttributeEval(Instances data, int numOfAttributes, String outputPath)
 			throws Exception {
-		System.out.println("\n Selecting Features ...");
+		System.out.println("\n Selecting Features using InfoGainAttributeEval ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
 		InfoGainAttributeEval ig = new InfoGainAttributeEval();
@@ -253,7 +253,7 @@ public class SelectAttributes {
 
 	protected static void GainRatioAttributeEval(Instances data, int numOfAttributes, String outputPath)
 			throws Exception {
-		System.out.println("\n Selecting Features ...");
+		System.out.println("\n Selecting Features using GainRatioAttributeEval ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
 		GainRatioAttributeEval gr = new GainRatioAttributeEval();
