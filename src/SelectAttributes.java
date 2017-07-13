@@ -31,12 +31,10 @@ public class SelectAttributes {
 	 *             if something goes wrong
 	 */
 	public void main(String[] args) throws Exception {
-		// args usage: -ip "C:\\Users\\Joe\\Desktop\\Summer
-		// 2017\\BioSNTR\\datasets\\V1V3.csv" -ra 1 -ca 1 - su 1 -ig 1 -ga 1 -att -1 -op
-		// "output/FeaturesSelected/" | (1 = true, 0 = false)
+		// args usage: -ip input file path -ra 1 -ca 1 - su 1 -ig 1 -ga 1 -att -1 -op
+		// output file path | (1 = true, 0 = false)
 
 		boolean RA = false, CA = false, SU = false, IG = false, GA = false;
-		// TODO: Check args input
 
 		if (args[3] == "1") {
 			RA = true;
@@ -59,8 +57,8 @@ public class SelectAttributes {
 		Instances data = source.getDataSet();
 		if (data.classIndex() == -1)
 			data.setClassIndex(data.numAttributes() - 1);
-		// process data
 
+		// process data
 		System.out.println("\n1. Processing data ...");
 		if (RA) {
 			ReliefFAttributeEval(data, Integer.parseInt(args[13]), args[15]);
@@ -77,11 +75,12 @@ public class SelectAttributes {
 		if (GA) {
 			GainRatioAttributeEval(data, Integer.parseInt(args[13]), args[15]);
 		}
+		System.out.println("\n2. Finalizing output ...");
 	}
 
 	protected static void ReliefFAttributeEval(Instances data, int numOfAttributes, String outputPath)
 			throws Exception {
-		System.out.println("\n Selecting Features ...");
+		System.out.println("\n Selecting features using ReliefFAttributeEval attribute evaluator ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
 		ReliefFAttributeEval ra = new ReliefFAttributeEval();
@@ -111,7 +110,8 @@ public class SelectAttributes {
 
 		attsel.SelectAttributes(data);
 		int[] indices = attsel.selectedAttributes();
-		System.out.println(attsel.toResultsString());
+		// System.out.println(attsel.toResultsString());
+		System.out.println(" -- Done -- ");
 
 		Object[] classes = new Object[indices.length];
 		for (int i = 0; i < indices.length - 1; i++) {
@@ -126,7 +126,7 @@ public class SelectAttributes {
 
 	protected static void CorrelationAttributeEval(Instances data, int numOfAttributes, String outputPath)
 			throws Exception {
-		System.out.println("\n Selecting Features ...");
+		System.out.println("\n Selecting features using CorrelationAttributeEval attribute evaluator ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
 		CorrelationAttributeEval ca = new CorrelationAttributeEval();
@@ -153,7 +153,8 @@ public class SelectAttributes {
 
 		attsel.SelectAttributes(data);
 		int[] indices = attsel.selectedAttributes();
-		System.out.println(attsel.toResultsString());
+		// System.out.println(attsel.toResultsString());
+		System.out.println(" -- Done -- ");
 
 		Object[] classes = new Object[indices.length];
 		for (int i = 0; i < indices.length - 1; i++) {
@@ -168,7 +169,7 @@ public class SelectAttributes {
 
 	protected static void SymmetricalUncertAttributeEval(Instances data, int numOfAttributes, String outputPath)
 			throws Exception {
-		System.out.println("\n Selecting Features ...");
+		System.out.println("\n Selecting features using SymmetricalUncertAttributeEval attribute evaluator ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
 		SymmetricalUncertAttributeEval su = new SymmetricalUncertAttributeEval();
@@ -195,7 +196,8 @@ public class SelectAttributes {
 
 		attsel.SelectAttributes(data);
 		int[] indices = attsel.selectedAttributes();
-		System.out.println(attsel.toResultsString());
+		// System.out.println(attsel.toResultsString());
+		System.out.println(" -- Done -- ");
 
 		Object[] classes = new Object[indices.length];
 		for (int i = 0; i < indices.length - 1; i++) {
@@ -210,7 +212,7 @@ public class SelectAttributes {
 
 	protected static void InfoGainAttributeEval(Instances data, int numOfAttributes, String outputPath)
 			throws Exception {
-		System.out.println("\n Selecting Features ...");
+		System.out.println("\n Selecting features using InfoGainAttributeEval attribute evaluator ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
 		InfoGainAttributeEval ig = new InfoGainAttributeEval();
@@ -238,7 +240,8 @@ public class SelectAttributes {
 
 		attsel.SelectAttributes(data);
 		int[] indices = attsel.selectedAttributes();
-		System.out.println(attsel.toResultsString());
+		// System.out.println(attsel.toResultsString());
+		System.out.println(" -- Done -- ");
 
 		Object[] classes = new Object[indices.length];
 		for (int i = 0; i < indices.length - 1; i++) {
@@ -253,7 +256,7 @@ public class SelectAttributes {
 
 	protected static void GainRatioAttributeEval(Instances data, int numOfAttributes, String outputPath)
 			throws Exception {
-		System.out.println("\n Selecting Features ...");
+		System.out.println("\n Selecting features using GainRatioAttributeEval attribute evaluator ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
 
 		GainRatioAttributeEval gr = new GainRatioAttributeEval();
@@ -280,7 +283,8 @@ public class SelectAttributes {
 
 		attsel.SelectAttributes(data);
 		int[] indices = attsel.selectedAttributes();
-		System.out.println(attsel.toResultsString());
+		// System.out.println(attsel.toResultsString());
+		System.out.println(" -- Done -- ");
 
 		Object[] classes = new Object[indices.length];
 		for (int i = 0; i < indices.length - 1; i++) {
