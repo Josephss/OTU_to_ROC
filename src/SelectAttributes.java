@@ -31,12 +31,10 @@ public class SelectAttributes {
 	 *             if something goes wrong
 	 */
 	public void main(String[] args) throws Exception {
-		// args usage: -ip "C:\\Users\\Joe\\Desktop\\Summer
-		// 2017\\BioSNTR\\datasets\\V1V3.csv" -ra 1 -ca 1 - su 1 -ig 1 -ga 1 -att -1 -op
-		// "output/FeaturesSelected/" | (1 = true, 0 = false)
+		// args usage: -ip input file path -ra 1 -ca 1 - su 1 -ig 1 -ga 1 -att -1 -op
+		// output file path | (1 = true, 0 = false)
 
 		boolean RA = false, CA = false, SU = false, IG = false, GA = false;
-		// TODO: Check args input
 
 		if (args[3] == "1") {
 			RA = true;
@@ -113,7 +111,7 @@ public class SelectAttributes {
 		attsel.SelectAttributes(data);
 		int[] indices = attsel.selectedAttributes();
 		// System.out.println(attsel.toResultsString());
-		System.out.println(" -- Done! -- ");
+		System.out.println(" -- Done -- ");
 
 		Object[] classes = new Object[indices.length];
 		for (int i = 0; i < indices.length - 1; i++) {
@@ -156,7 +154,7 @@ public class SelectAttributes {
 		attsel.SelectAttributes(data);
 		int[] indices = attsel.selectedAttributes();
 		// System.out.println(attsel.toResultsString());
-		System.out.println(" -- Done! -- ");
+		System.out.println(" -- Done -- ");
 
 		Object[] classes = new Object[indices.length];
 		for (int i = 0; i < indices.length - 1; i++) {
@@ -199,7 +197,7 @@ public class SelectAttributes {
 		attsel.SelectAttributes(data);
 		int[] indices = attsel.selectedAttributes();
 		// System.out.println(attsel.toResultsString());
-		System.out.println(" -- Done! -- ");
+		System.out.println(" -- Done -- ");
 
 		Object[] classes = new Object[indices.length];
 		for (int i = 0; i < indices.length - 1; i++) {
@@ -243,7 +241,7 @@ public class SelectAttributes {
 		attsel.SelectAttributes(data);
 		int[] indices = attsel.selectedAttributes();
 		// System.out.println(attsel.toResultsString());
-		System.out.println(" -- Done! -- ");
+		System.out.println(" -- Done -- ");
 
 		Object[] classes = new Object[indices.length];
 		for (int i = 0; i < indices.length - 1; i++) {
@@ -286,7 +284,7 @@ public class SelectAttributes {
 		attsel.SelectAttributes(data);
 		int[] indices = attsel.selectedAttributes();
 		// System.out.println(attsel.toResultsString());
-		System.out.println(" -- Done! -- ");
+		System.out.println(" -- Done -- ");
 
 		Object[] classes = new Object[indices.length];
 		for (int i = 0; i < indices.length - 1; i++) {

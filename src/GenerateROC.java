@@ -20,7 +20,7 @@ import javax.swing.JFrame;
 
 /*
  * @author Joseph Mammo	
- * @version 003
+ * @version 004
  */
 public class GenerateROC {
 
