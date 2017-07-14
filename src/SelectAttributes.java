@@ -302,8 +302,8 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "GainRatioAttributeEval", outputPath);
-		writeFileMod(classes, newData, "GainRatioAttributeEval", outputPath); // class, data, fileName
+		writeFile(classes, newData, "GainRatio", outputPath);
+		writeFileMod(classes, newData, "GainRatio", outputPath); // class, data, fileName
 
 	}
 
