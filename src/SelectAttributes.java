@@ -1,9 +1,15 @@
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+
 import weka.attributeSelection.ReliefFAttributeEval;
 import weka.attributeSelection.AttributeSelection;
 import weka.attributeSelection.CorrelationAttributeEval;
@@ -17,7 +23,7 @@ import weka.filters.Filter;
 
 /*
  * @author Joseph Mammo	
- * @version 004
+ * @version 005
  */
 public class SelectAttributes {
 
@@ -32,7 +38,7 @@ public class SelectAttributes {
 	 */
 	public void main(String[] args) throws Exception {
 		// args usage: -ip input file path -ra 1 -ca 1 - su 1 -ig 1 -ga 1 -att -1 -op
-		// output file path | (1 = true, 0 = false)
+		// output file path -| (1 = true, 0 = false)
 
 		boolean RA = false, CA = false, SU = false, IG = false, GA = false;
 
@@ -120,7 +126,8 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "ReliefF", outputPath); // class, data, fileName
+		writeFile(classes, newData, "ReliefF", outputPath); 
+		writeFileMod(classes, newData, "ReliefF", outputPath); 
 
 	}
 
@@ -163,7 +170,8 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "Correlation", outputPath); // class, data, fileName
+		writeFile(classes, newData, "Correlation", outputPath); 
+		writeFileMod(classes, newData, "Correlation", outputPath);
 
 	}
 
@@ -206,7 +214,8 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "SymmetricalUncert", outputPath); // class, data, fileName
+		writeFile(classes, newData, "SymmetricalUncert", outputPath);
+		writeFileMod(classes, newData, "SymmetricalUncert", outputPath);
 
 	}
 
@@ -250,8 +259,8 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "InfoGain", outputPath); // class, data, fileName
-
+		writeFile(classes, newData, "InfoGain", outputPath);
+		writeFileMod(classes, newData, "InfoGain", outputPath);
 	}
 
 	protected static void GainRatioAttributeEval(Instances data, int numOfAttributes, String outputPath)
@@ -293,7 +302,8 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "GainRatio", outputPath); // class, data, fileName
+		writeFile(classes, newData, "GainRatioAttributeEval", outputPath);
+		writeFileMod(classes, newData, "GainRatioAttributeEval", outputPath); // class, data, fileName
 
 	}
 
@@ -312,6 +322,80 @@ public class SelectAttributes {
 
 		Path file = Paths.get(outputPath + fileName + ".csv");
 		Files.write(file, lines, Charset.forName("UTF-8"));
+
+	}
+
+	public static void writeFileMod(Object[] classes, Instances data, String fileName, String outputPath)
+			throws IOException {
+
+		File outputDir = new File(System.getProperty("user.dir") + "\\Input\\");
+		ArrayList<String> lines = new ArrayList<>();
+
+		String[] tempData = asStrings(data.toArray());
+		String[] tempClassStArr = asStrings(classes);
+
+		for (int i = 0; i < tempData.length; i++) {
+			lines.add(tempData[i]);
+		}
+
+		Path file = Paths.get(outputDir.toString() + "/" + fileName + ".csv");
+		Files.write(file, lines, Charset.forName("UTF-8"));
+
+		// test code
+		File filee = new File(outputDir.toString() + "/" + fileName + ".csv");
+		List<String> liness = Files.readAllLines(filee.toPath(), StandardCharsets.UTF_8);
+
+		ArrayList<Object> cc = new ArrayList<>();
+		for (String line : liness) {
+			String[] array = line.split(",");
+			cc.add(array[tempClassStArr.length - 1]);
+		}
+		// System.out.println(cc.toString());
+		// System.out.println(stringToInt(cc).toString());
+
+		ArrayList<String> lines2 = new ArrayList<>();
+		ArrayList<String> fin;
+		int temp = 0;
+		for (String line : liness) {
+			String[] tempArr1 = line.split(",");
+			fin = new ArrayList<>();
+			for (int i = 0; i < tempClassStArr.length - 2; i++) {
+				fin.add(tempArr1[i]);
+			}
+			fin.add(Integer.toString(stringToInt(cc).get(temp)));
+
+			StringBuilder finWithoutBrackets = new StringBuilder();
+			for (String value : fin) {
+				finWithoutBrackets.append(value);
+				finWithoutBrackets.append(",");
+			}
+			lines2.add(finWithoutBrackets.toString());
+			temp++;
+		}
+
+		Files.write(file, lines2, Charset.forName("UTF-8"));
+	}
+
+	public static ArrayList<Integer> stringToInt(ArrayList<Object> input) {
+
+		String[] tempData = asStrings(input.toArray());
+
+		ArrayList<Integer> outputInt = new ArrayList<>();
+		HashSet<String> st = new HashSet<>();
+		HashMap<String, Integer> hs = new HashMap<>();
+
+		for (int i = 0; i < input.size(); i++) {
+			st.add(tempData[i]);
+		}
+		Object[] tempArr = st.toArray();
+		for (int j = 0; j < st.size(); j++) {
+			hs.put(tempArr[j].toString(), j);
+		}
+		for (int k = 0; k < input.size(); k++) {
+			outputInt.add(hs.get(input.get(k)));
+		}
+
+		return outputInt;
 	}
 
 	public static String[] asStrings(Object... objArray) {
