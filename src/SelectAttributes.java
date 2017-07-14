@@ -1,14 +1,15 @@
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+
+//import java.util.List;
+//import java.nio.charset.StandardCharsets;
 
 import weka.attributeSelection.ReliefFAttributeEval;
 import weka.attributeSelection.AttributeSelection;
@@ -332,7 +333,7 @@ public class SelectAttributes {
 		ArrayList<String> lines = new ArrayList<>();
 
 		String[] tempData = asStrings(data.toArray());
-		String[] tempClassStArr = asStrings(classes);
+		
 
 		for (int i = 0; i < tempData.length; i++) {
 			lines.add(tempData[i]);
@@ -341,7 +342,8 @@ public class SelectAttributes {
 		Path file = Paths.get(outputDir.toString() + "/" + fileName + ".csv");
 		Files.write(file, lines, Charset.forName("UTF-8"));
 
-		// test code
+		/*
+		 * String[] tempClassStArr = asStrings(classes);
 		File filee = new File(outputDir.toString() + "/" + fileName + ".csv");
 		List<String> liness = Files.readAllLines(filee.toPath(), StandardCharsets.UTF_8);
 
@@ -374,6 +376,7 @@ public class SelectAttributes {
 		}
 
 		Files.write(file, lines2, Charset.forName("UTF-8"));
+		*/
 	}
 
 	public static ArrayList<Integer> stringToInt(ArrayList<Object> input) {
