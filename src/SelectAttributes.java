@@ -369,7 +369,7 @@ public class SelectAttributes {
 				finWithoutBrackets.append(value);
 				finWithoutBrackets.append(",");
 			}
-			lines2.add(finWithoutBrackets.toString());
+			lines2.add(finWithoutBrackets.toString().substring(0, finWithoutBrackets.length()-1));
 			temp++;
 		}
 
