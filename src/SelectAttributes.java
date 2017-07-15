@@ -7,9 +7,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-
-//import java.util.List;
-//import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.nio.charset.StandardCharsets;
 
 import weka.attributeSelection.ReliefFAttributeEval;
 import weka.attributeSelection.AttributeSelection;
@@ -127,8 +127,8 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "ReliefF", outputPath); 
-		writeFileMod(classes, newData, "ReliefF", outputPath); 
+		writeFile(classes, newData, "ReliefF", outputPath);
+		writeFileMod(classes, newData, "ReliefF", outputPath);
 
 	}
 
@@ -171,7 +171,7 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "Correlation", outputPath); 
+		writeFile(classes, newData, "Correlation", outputPath);
 		writeFileMod(classes, newData, "Correlation", outputPath);
 
 	}
@@ -333,7 +333,6 @@ public class SelectAttributes {
 		ArrayList<String> lines = new ArrayList<>();
 
 		String[] tempData = asStrings(data.toArray());
-		
 
 		for (int i = 0; i < tempData.length; i++) {
 			lines.add(tempData[i]);
@@ -342,8 +341,7 @@ public class SelectAttributes {
 		Path file = Paths.get(outputDir.toString() + "/" + fileName + ".csv");
 		Files.write(file, lines, Charset.forName("UTF-8"));
 
-		/*
-		 * String[] tempClassStArr = asStrings(classes);
+		String[] tempClassStArr = asStrings(classes);
 		File filee = new File(outputDir.toString() + "/" + fileName + ".csv");
 		List<String> liness = Files.readAllLines(filee.toPath(), StandardCharsets.UTF_8);
 
@@ -371,12 +369,14 @@ public class SelectAttributes {
 				finWithoutBrackets.append(value);
 				finWithoutBrackets.append(",");
 			}
-			lines2.add(finWithoutBrackets.toString().substring(0, finWithoutBrackets.length()-1));
+			lines2.add(finWithoutBrackets.toString().substring(0, finWithoutBrackets.length() - 1)); // remove the last
+																										// comma and
+																										// append
 			temp++;
 		}
 
 		Files.write(file, lines2, Charset.forName("UTF-8"));
-		*/
+
 	}
 
 	public static ArrayList<Integer> stringToInt(ArrayList<Object> input) {
@@ -384,14 +384,14 @@ public class SelectAttributes {
 		String[] tempData = asStrings(input.toArray());
 
 		ArrayList<Integer> outputInt = new ArrayList<>();
-		HashSet<String> st = new HashSet<>();
+		LinkedHashSet<String> lhs = new LinkedHashSet<>();
 		HashMap<String, Integer> hs = new HashMap<>();
 
 		for (int i = 0; i < input.size(); i++) {
-			st.add(tempData[i]);
+			lhs.add(tempData[i]);
 		}
-		Object[] tempArr = st.toArray();
-		for (int j = 0; j < st.size(); j++) {
+		Object[] tempArr = lhs.toArray();
+		for (int j = 0; j < lhs.size(); j++) {
 			hs.put(tempArr[j].toString(), j);
 		}
 		for (int k = 0; k < input.size(); k++) {
