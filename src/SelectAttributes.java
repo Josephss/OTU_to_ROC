@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.nio.charset.StandardCharsets;
@@ -29,8 +28,8 @@ import weka.filters.Filter;
 public class SelectAttributes {
 
 	/**
-	 * Takes one argument: dataset in CSV or ARFF format (expects class to be last
-	 * attribute).
+	 * Takes in args usage: -ip input file path -ra 1 -ca 1 - su 1 -ig 1 -ga 1 -att
+	 * -1 -op output file path -| (1 = true, 0 = false)
 	 * 
 	 * @param args
 	 *            the commandline arguments
@@ -38,8 +37,6 @@ public class SelectAttributes {
 	 *             if something goes wrong
 	 */
 	public void main(String[] args) throws Exception {
-		// args usage: -ip input file path -ra 1 -ca 1 - su 1 -ig 1 -ga 1 -att -1 -op
-		// output file path -| (1 = true, 0 = false)
 
 		boolean RA = false, CA = false, SU = false, IG = false, GA = false;
 
@@ -304,10 +301,22 @@ public class SelectAttributes {
 
 		// Write out selected features
 		writeFile(classes, newData, "GainRatio", outputPath);
-		writeFileMod(classes, newData, "GainRatio", outputPath); // class, data, fileName
+		writeFileMod(classes, newData, "GainRatio", outputPath); 
 
 	}
 
+	/**
+	 * 
+	 * @param classes:
+	 *            Takes in list of class names,
+	 * @param data:
+	 *            their corresponding attributes with values,
+	 * @param fileName:
+	 *            the name of the output file,
+	 * @param outputPath:
+	 *            the path of the output file and writes it out to a CSV file.
+	 * @throws IOException
+	 */
 	public static void writeFile(Object[] classes, Instances data, String fileName, String outputPath)
 			throws IOException {
 		ArrayList<String> lines = new ArrayList<>();
@@ -326,6 +335,19 @@ public class SelectAttributes {
 
 	}
 
+	/**
+	 * 
+	 * @param classes:
+	 *            Takes in list of class names,
+	 * @param data:
+	 *            their corresponding attributes with values,
+	 * @param fileName:
+	 *            the name of the output file,
+	 * @param outputPath:
+	 *            the path of the output file and writes out a CSV file without the
+	 *            attribute names and int representations of the classes.
+	 * @throws IOException
+	 */
 	public static void writeFileMod(Object[] classes, Instances data, String fileName, String outputPath)
 			throws IOException {
 
@@ -350,8 +372,6 @@ public class SelectAttributes {
 			String[] array = line.split(",");
 			cc.add(array[tempClassStArr.length - 1]);
 		}
-		// System.out.println(cc.toString());
-		// System.out.println(stringToInt(cc).toString());
 
 		ArrayList<String> lines2 = new ArrayList<>();
 		ArrayList<String> fin;
@@ -379,21 +399,31 @@ public class SelectAttributes {
 
 	}
 
+	/**
+	 * 
+	 * @param input:
+	 *            Takes in object array of class names
+	 * @return outputInt: outputs incrementing int values corresponding to the class
+	 *         inputs
+	 */
 	public static ArrayList<Integer> stringToInt(ArrayList<Object> input) {
-
+		// convert to string array
 		String[] tempData = asStrings(input.toArray());
 
 		ArrayList<Integer> outputInt = new ArrayList<>();
 		LinkedHashSet<String> lhs = new LinkedHashSet<>();
 		HashMap<String, Integer> hs = new HashMap<>();
 
+		// append unique class names, in order
 		for (int i = 0; i < input.size(); i++) {
 			lhs.add(tempData[i]);
 		}
+		// map each class name with incrementing int
 		Object[] tempArr = lhs.toArray();
 		for (int j = 0; j < lhs.size(); j++) {
 			hs.put(tempArr[j].toString(), j);
 		}
+		// using mapping to assign the int values for each class
 		for (int k = 0; k < input.size(); k++) {
 			outputInt.add(hs.get(input.get(k)));
 		}
