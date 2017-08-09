@@ -77,7 +77,7 @@ public class SelectAttributes {
 			InfoGainAttributeEval(data, Integer.parseInt(args[13]), args[15]);
 		}
 		if (GA) {
-			GainRatioAttributeEval(data, Integer.parseInt(args[13]), args[15]);
+			InfoGainAttributeEval(data, Integer.parseInt(args[13]), args[15]);
 		}
 		System.out.println("\n2. Finalizing output ...");
 	}
@@ -86,7 +86,7 @@ public class SelectAttributes {
 			throws Exception {
 		System.out.println("\n Selecting features using ReliefFAttributeEval attribute evaluator ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
-
+		
 		ReliefFAttributeEval ra = new ReliefFAttributeEval();
 		ra.setDoNotCheckCapabilities(false);
 		ra.setNumNeighbours(10);
@@ -114,7 +114,6 @@ public class SelectAttributes {
 
 		attsel.SelectAttributes(data);
 		int[] indices = attsel.selectedAttributes();
-		// System.out.println(attsel.toResultsString());
 		System.out.println(" -- Done -- ");
 
 		Object[] classes = new Object[indices.length];
@@ -124,8 +123,8 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "ReliefF", outputPath);
-		writeFileMod(classes, newData, "ReliefF", outputPath);
+		writeFile(classes, newData, "ReliefF", outputPath); // user output
+		writeFileMod(classes, newData, "ReliefF", outputPath); // ROC generator script output
 
 	}
 
@@ -168,8 +167,8 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "Correlation", outputPath);
-		writeFileMod(classes, newData, "Correlation", outputPath);
+		writeFile(classes, newData, "Correlation", outputPath); // user output
+		writeFileMod(classes, newData, "Correlation", outputPath); // ROC generator script output
 
 	}
 
@@ -212,8 +211,8 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "SymmetricalUncert", outputPath);
-		writeFileMod(classes, newData, "SymmetricalUncert", outputPath);
+		writeFile(classes, newData, "SymmetricalUncert", outputPath); // user output
+		writeFileMod(classes, newData, "SymmetricalUncert", outputPath); // ROC generator script output
 
 	}
 
@@ -257,8 +256,8 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "InfoGain", outputPath);
-		writeFileMod(classes, newData, "InfoGain", outputPath);
+		writeFile(classes, newData, "InfoGain", outputPath); // user output
+		writeFileMod(classes, newData, "InfoGain", outputPath); // ROC generator script output
 	}
 
 	protected static void GainRatioAttributeEval(Instances data, int numOfAttributes, String outputPath)
@@ -300,8 +299,8 @@ public class SelectAttributes {
 		classes[indices.length - 1] = "class"; // add class label so it is compatible to read back
 
 		// Write out selected features
-		writeFile(classes, newData, "GainRatio", outputPath);
-		writeFileMod(classes, newData, "GainRatio", outputPath); 
+		writeFile(classes, newData, "GainRatio", outputPath); // user output
+		writeFileMod(classes, newData, "GainRatio", outputPath); // ROC generator script output
 
 	}
 
@@ -324,10 +323,10 @@ public class SelectAttributes {
 		String[] tempData = asStrings(data.toArray());
 		String[] tempClassStArr = asStrings(classes);
 
-		lines.add(String.join(",", tempClassStArr));
+		lines.add(String.join(",", tempClassStArr)); // append attribute names
 
 		for (int i = 0; i < tempData.length; i++) {
-			lines.add(tempData[i]);
+			lines.add(tempData[i]); // append attribute values
 		}
 
 		Path file = Paths.get(outputPath + fileName + ".csv");
@@ -389,9 +388,7 @@ public class SelectAttributes {
 				finWithoutBrackets.append(value);
 				finWithoutBrackets.append(",");
 			}
-			lines2.add(finWithoutBrackets.toString().substring(0, finWithoutBrackets.length() - 1)); // remove the last
-																										// comma and
-																										// append
+			lines2.add(finWithoutBrackets.toString().substring(0, finWithoutBrackets.length() - 1)); // remove the last comma and append
 			temp++;
 		}
 
@@ -433,8 +430,9 @@ public class SelectAttributes {
 
 	public static String[] asStrings(Object... objArray) {
 		String[] strArray = new String[objArray.length];
-		for (int i = 0; i < objArray.length; i++)
+		for (int i = 0; i < objArray.length; i++) {
 			strArray[i] = String.valueOf(objArray[i]);
+		}
 		return strArray;
 	}
 
