@@ -86,7 +86,7 @@ public class SelectAttributes {
 			throws Exception {
 		System.out.println("\n Selecting features using ReliefFAttributeEval attribute evaluator ...");
 		weka.filters.supervised.attribute.AttributeSelection filter = new weka.filters.supervised.attribute.AttributeSelection();
-		
+
 		ReliefFAttributeEval ra = new ReliefFAttributeEval();
 		ra.setDoNotCheckCapabilities(false);
 		ra.setNumNeighbours(10);
@@ -318,6 +318,7 @@ public class SelectAttributes {
 	 */
 	public static void writeFile(Object[] classes, Instances data, String fileName, String outputPath)
 			throws IOException {
+		System.out.println("The user output directory is: " + outputPath);
 		ArrayList<String> lines = new ArrayList<>();
 
 		String[] tempData = asStrings(data.toArray());
@@ -351,6 +352,7 @@ public class SelectAttributes {
 			throws IOException {
 
 		File outputDir = new File(System.getProperty("user.dir") + "\\Input\\");
+		System.out.println("The script output directory is: " + outputDir);
 		ArrayList<String> lines = new ArrayList<>();
 
 		String[] tempData = asStrings(data.toArray());
@@ -388,7 +390,9 @@ public class SelectAttributes {
 				finWithoutBrackets.append(value);
 				finWithoutBrackets.append(",");
 			}
-			lines2.add(finWithoutBrackets.toString().substring(0, finWithoutBrackets.length() - 1)); // remove the last comma and append
+			lines2.add(finWithoutBrackets.toString().substring(0, finWithoutBrackets.length() - 1)); // remove the last
+																										// comma and
+																										// append
 			temp++;
 		}
 
