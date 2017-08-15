@@ -77,7 +77,7 @@ public class SelectAttributes {
 			InfoGainAttributeEval(data, Integer.parseInt(args[13]), args[15]);
 		}
 		if (GA) {
-			InfoGainAttributeEval(data, Integer.parseInt(args[13]), args[15]);
+			GainRatioAttributeEval(data, Integer.parseInt(args[13]), args[15]);
 		}
 		System.out.println("\n2. Finalizing output ...");
 	}
